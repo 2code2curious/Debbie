@@ -1,0 +1,15 @@
+{
+  "name": "debbie",
+  "version": "1.0.0",
+  "description": "simple to-do list manager",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app"
+  },
+  "author": "Kamalpreet Grewal & Gurjot Bhatti",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.15.4",
+    "pug": "^2.0.0-rc.4"
+  }
+}
