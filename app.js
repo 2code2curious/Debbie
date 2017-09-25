@@ -1,7 +1,25 @@
 const express = require('express');
 const path = require('path');
+const mongoose = require('mongoose');
+
+mongoose.connect('mongodb://localhost/debbie');
+let db = mongoose.connection;
+
+// Check connection
+db.once('open', function(){
+  console.log('Connected to mongoDB');
+});
+
+// Check for db errors
+db.on('error', function(err){
+  console.log(err);
+});
+
 // Init app
 const app = express();
+
+// Bring in models
+let Task = require('./models/task');
 
 // Load view engine
 app.set('views', path.join(__dirname, 'views'));
@@ -9,26 +27,15 @@ app.set('view engine', 'pug');
 
 // Home route
 app.get('/', function(req, res) {
-  let tasks = [
-    {
-      id:1,
-      title:'Task one',
-      body:'This is task 1'
-    },
-    {
-      id:2,
-      title:'Task two',
-      body:'This is task 2'
-    },
-    {
-      id:3,
-      title:'Task three',
-      body:'This is task 3'
+  Task.find({}, function(err, tasks){
+    if(err){
+      console.log(err);
+    } else {
+    res.render('index', {
+      title:'Debbie welcomes you!',
+      tasks:tasks
+    });
     }
-  ];
-  res.render('index', {
-    title:'Debbie welcomes you!',
-    tasks:tasks
   });
 });
 
