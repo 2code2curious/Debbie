@@ -2,6 +2,7 @@ extends layout
 
 block content
   h1 #{title}
-  ul
+  ul.list-group
     each task, i in tasks
-      li= task.title
+      li.list-group-item
+        a(href='/task/'+task._id)= task.title

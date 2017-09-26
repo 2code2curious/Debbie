@@ -33,6 +33,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
 
+// Set public folder
+app.use(express.static(path.join(__dirname, 'public')));
+
 // Home route
 app.get('/', function(req, res) {
   Task.find({}, function(err, tasks){
@@ -67,6 +70,15 @@ app.post('/tasks/add', function(req, res){
     } else {
       res.redirect('/');
     }
+  });
+});
+
+// Get single task
+app.get('/task/:id', function(req, res){
+  Task.findById(req.params.id, function(err, task){
+    res.render('task', {
+      task:task
+    })
   });
 });
 
