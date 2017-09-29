@@ -2,12 +2,12 @@ extends layout
 
 block content
   h1 #{title}
-  form(method='POST', action='/tasks/add')
+  form(method='POST', action='/tasks/edit/'+task._id)
     #form-group
       label Title:
-      input.form-control(name='title', type='text')
+      input.form-control(name='title', type='text', value=task.title)
     #form-group
       label Body:
-      textarea.form-control(name='body')
+      textarea.form-control(name='body')= task.body
     br
     input.btn.btn-primary(type='submit', value='Submit')

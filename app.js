@@ -78,7 +78,47 @@ app.get('/task/:id', function(req, res){
   Task.findById(req.params.id, function(err, task){
     res.render('task', {
       task:task
-    })
+    });
+  });
+});
+
+// Load edit form
+app.get('/task/edit/:id', function(req, res){
+  Task.findById(req.params.id, function(err, task){
+    res.render('edit_task', {
+      title: 'Edit Task',
+      task:task
+    });
+  })
+});
+
+// Update Submit POST route
+app.post('/tasks/edit/:id', function(req, res){
+  let task = {};
+  task.title = req.body.title;
+  task.body = req.body.body;
+
+  let query = {_id:req.params.id};
+
+  Task.update(query, task, function(err){
+    if(err) {
+      console.log(err);
+      return;
+    } else {
+      res.redirect('/');
+    }
+  });
+});
+
+// Delete task request
+app.delete('/task/:id', function(req, res){
+  let query = {_id:req.params.id};
+
+  Task.remove(query, function(err){
+    if(err){
+      console.log(err);
+    }
+    res.send('Success!');
   });
 });
 
