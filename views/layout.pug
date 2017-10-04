@@ -21,7 +21,21 @@ html
                 span.sr-only (current)
             li
               a(href='/tasks/add') Add Task
+            li
+          ul.nav.navbar-nav.navbar-right
+            if user
+              li
+                a(href='/users/logout') Logout
+            else
+              li
+                a(href='/users/register') Register
+              li
+                a(href='/users/login') Login
     .container
+      != messages('message', locals)
+      if errors
+        each error, i in errors
+          div(class="alert alert-danger") #{error.msg}
       block content
       br
       hr

@@ -2,8 +2,13 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const expressValidator = require('express-validator');
+const session  = require('express-session');
+const flash = require('connect-flash');
+const config = require('./config/database');
+const passport = require('passport');
 
-mongoose.connect('mongodb://localhost/debbie');
+mongoose.connect(config.database);
 let db = mongoose.connection;
 
 // Check connection
@@ -36,6 +41,30 @@ app.use(bodyParser.json());
 // Set public folder
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(session({
+  secret: 'iamdebbie',
+  resave: true,
+  saveUninitialized: true
+}));
+
+app.use(expressValidator());
+app.use(require('connect-flash')());
+app.use(function(req, res, next){
+  res.locals.messages = require('express-messages')(req, res);
+  next();
+});
+
+// Passport login
+require('./config/passport')(passport);
+// Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.get('*', function(req, res, next){
+  res.locals.user = req.user || null;
+  next();
+})
+
 // Home route
 app.get('/', function(req, res) {
   Task.find({}, function(err, tasks){
@@ -54,8 +83,8 @@ app.get('/', function(req, res) {
 app.get('/tasks/add', function(req, res){
   res.render('add_task', {
     title:'Add task'
-  })
-})
+  });
+});
 
 // Add Submit POST route
 app.post('/tasks/add', function(req, res){
@@ -121,6 +150,9 @@ app.delete('/task/:id', function(req, res){
     res.send('Success!');
   });
 });
+
+let users =  require('./routes/users.js');
+app.use('/users', users);
 
 // Start server
 app.listen(3000, function() {

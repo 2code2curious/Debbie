@@ -50,7 +50,7 @@ router.post('/register', function(req, res){
             console.log(err);
             return;
           } else {
-            // req.flash('success', 'You are registered and proceed to log in.');
+            req.flash('success', 'You are registered and proceed to log in.');
             res.redirect('/users/login');
           }
         });
@@ -59,12 +59,25 @@ router.post('/register', function(req, res){
   }
 });
 
+// Login form
 router.get('/login', function(req, res){
   res.render('login');
 });
 
-router.post('/login', function(req, res){
+// Login process
+router.post('/login', function(req, res, next){
+  passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect: '/users/login',
+    failureFlash: true
+  })(req, res, next);
+});
 
+// Logout
+router.get('/logout', function(req, res, next){
+  req.logout();
+  req.flash('success', 'You are logged out.');
+  res.redirect('/users/login');
 });
 
 module.exports = router;
