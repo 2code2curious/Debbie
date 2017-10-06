@@ -41,18 +41,37 @@ app.use(bodyParser.json());
 // Set public folder
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Express session middleware
 app.use(session({
   secret: 'iamdebbie',
   resave: true,
   saveUninitialized: true
 }));
 
-app.use(expressValidator());
+// Express messages middleware
 app.use(require('connect-flash')());
 app.use(function(req, res, next){
   res.locals.messages = require('express-messages')(req, res);
   next();
 });
+
+// Express validator middleware
+app.use(expressValidator({
+  errorFormatter: function(param, msg, value) {
+    var namespace = param.split('.')
+    , root = namespace.shift()
+    , formParam = root;
+
+    while (namespace.length) {
+      formParam += '[' + namespace.shift() + ']';
+    }
+    return {
+      param: formParam,
+      msg: msg,
+      value: value
+    };
+  }
+}));
 
 // Passport login
 require('./config/passport')(passport);
@@ -79,79 +98,11 @@ app.get('/', function(req, res) {
   });
 });
 
-// Add route
-app.get('/tasks/add', function(req, res){
-  res.render('add_task', {
-    title:'Add task'
-  });
-});
+// Route files
+let tasks = require('./routes/tasks');
+app.use('/tasks', tasks);
 
-// Add Submit POST route
-app.post('/tasks/add', function(req, res){
-  let task = new Task();
-  task.title = req.body.title;
-  task.body = req.body.body;
-
-  task.save(function(err){
-    if(err) {
-      console.log(err);
-      return;
-    } else {
-      res.redirect('/');
-    }
-  });
-});
-
-// Get single task
-app.get('/task/:id', function(req, res){
-  Task.findById(req.params.id, function(err, task){
-    res.render('task', {
-      task:task
-    });
-  });
-});
-
-// Load edit form
-app.get('/task/edit/:id', function(req, res){
-  Task.findById(req.params.id, function(err, task){
-    res.render('edit_task', {
-      title: 'Edit Task',
-      task:task
-    });
-  })
-});
-
-// Update Submit POST route
-app.post('/tasks/edit/:id', function(req, res){
-  let task = {};
-  task.title = req.body.title;
-  task.body = req.body.body;
-
-  let query = {_id:req.params.id};
-
-  Task.update(query, task, function(err){
-    if(err) {
-      console.log(err);
-      return;
-    } else {
-      res.redirect('/');
-    }
-  });
-});
-
-// Delete task request
-app.delete('/task/:id', function(req, res){
-  let query = {_id:req.params.id};
-
-  Task.remove(query, function(err){
-    if(err){
-      console.log(err);
-    }
-    res.send('Success!');
-  });
-});
-
-let users =  require('./routes/users.js');
+let users =  require('./routes/users');
 app.use('/users', users);
 
 // Start server
