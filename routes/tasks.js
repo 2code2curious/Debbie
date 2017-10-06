@@ -3,9 +3,11 @@ const router = express.Router();
 
 // Bring in Task model
 let Task = require('../models/task');
+// Bring in User model
+let User = require('../models/user');
 
 // Add route
-router.get('/add', function(req, res){
+router.get('/add', ensureAuthenticated, function(req, res){
   res.render('add_task', {
     title:'Add task'
   });
@@ -27,6 +29,7 @@ router.post('/add', function(req, res){
   } else{
     let task = new Task();
     task.title = req.body.title;
+    task.creator = req.user._id;
     task.body = req.body.body;
 
     task.save(function(err){
@@ -44,20 +47,28 @@ router.post('/add', function(req, res){
 // Get single task
 router.get('/:id', function(req, res){
   Task.findById(req.params.id, function(err, task){
-    res.render('task', {
-      task:task
+    User.findById(task.creator, function(err, user){
+      res.render('task', {
+        task:task,
+        creator: user.name
+      });
     });
   });
 });
 
 // Load edit form
-router.get('/edit/:id', function(req, res){
+router.get('/edit/:id', ensureAuthenticated, function(req, res){
   Task.findById(req.params.id, function(err, task){
-    res.render('edit_task', {
-      title: 'Edit Task',
-      task:task
-    });
-  })
+    if(task.creator != req.user._id){
+      req.flash('danger', 'Not authorized');
+      res.redirect('/');
+    } else{
+      res.render('edit_task', {
+        title: 'Edit Task',
+        task:task
+      });
+    }
+  });
 });
 
 // Update Submit POST route
@@ -90,5 +101,15 @@ router.delete('/:id', function(req, res){
     res.send('Success!');
   });
 });
+
+// Access control
+function ensureAuthenticated(req, res, next){
+  if(req.isAuthenticated()){
+    return next();
+  } else{
+    req.flash('danger', 'Please login');
+    res.redirect('/users/login');
+  }
+}
 
 module.exports = router;

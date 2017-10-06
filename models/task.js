@@ -6,6 +6,10 @@ let taskSchema = mongoose.Schema({
     type: String,
     required: true
   },
+  creator:{
+    type: String,
+    required: true
+  },
   body:{
     type: String,
     required: true

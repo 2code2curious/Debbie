@@ -2,7 +2,10 @@ extends layout
 
 block content
   h1= task.title
+  h5 Created by #{creator}
   h5= task.body
   hr
-  a.btn.btn-default(href='/tasks/edit/'+task._id) Edit
-  a.btn.btn-danger.delete-task(href='#', data-id=task._id) Delete
+  if user
+    if user.id == task.creator
+      a.btn.btn-default(href='/tasks/edit/'+task._id) Edit
+      a.btn.btn-danger.delete-task(href='#', data-id=task._id) Delete

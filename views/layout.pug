@@ -19,9 +19,9 @@ html
             li
               a(href='/') Home
                 span.sr-only (current)
-            li
-              a(href='/tasks/add') Add Task
-            li
+            if user
+              li
+                a(href='/tasks/add') Add Task
           ul.nav.navbar-nav.navbar-right
             if user
               li
