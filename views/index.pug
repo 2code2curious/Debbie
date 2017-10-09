@@ -1,8 +1,22 @@
 extends layout
 
 block content
-  h1 #{title}
-  ul.list-group
-    each task, i in tasks
-      li.list-group-item
-        a(href='/tasks/'+task._id)= task.title
+  //- h1 #{title}
+  div.row
+    h3(id="month")
+    div.col-lg-6
+      div(id="calendar")
+    div.col-lg-6
+      div.row
+        div.col-lg-8
+          h2(style="margin:0;") My activities
+        if user
+          div.col-lg-4(align="right")
+            a(href='/tasks/add').btn.btn-default
+              span.glyphicon.glyphicon-plus
+      ul.list-group
+        each task, i in tasks
+          li.list-group-item
+            if user
+              input(type='checkbox')
+            a(href='/tasks/'+task._id)= task.title

@@ -1,4 +1,11 @@
 $(document).ready(function(){
+  $("#calendar").zabuto_calendar({
+    language: 'en',
+    today: true,
+    action: function() {
+      return dateEvent(this.id);
+    }
+  });
   $('.delete-task').on('click', function(e){
     $target = $(e.target);
     const id = $target.attr('data-id');
@@ -15,3 +22,9 @@ $(document).ready(function(){
     })
   });
 });
+
+function dateEvent(id){
+  var date = $("#" + id).data("date");
+  alert(date + " is clicked.");
+  return true;
+}
