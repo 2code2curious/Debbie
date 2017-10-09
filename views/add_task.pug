@@ -1,13 +1,8 @@
-extends layout
-
 block content
-  h1 #{title}
-  form(method='POST', action='/tasks/add')
+  form(id="add-task-form", method='POST', action='/tasks/add')
     #form-group
       label Title:
       input.form-control(name='title', type='text')
     #form-group
-      label Body:
+      label Description:
       textarea.form-control(name='body')
-    br
-    input.btn.btn-primary(type='submit', value='Submit')

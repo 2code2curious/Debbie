@@ -21,6 +21,12 @@ $(document).ready(function(){
       }
     })
   });
+  $("#add-btn").on('click', function(){
+    $("#add-modal").modal('show');
+  });
+  $("#add-btn-modal").on('click', function(){
+    $("#add-task-form").submit();
+  })
 });
 
 function dateEvent(id){

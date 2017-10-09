@@ -1,7 +1,6 @@
 extends layout
 
 block content
-  //- h1 #{title}
   div.row
     h3(id="month")
     div.col-lg-6
@@ -12,7 +11,7 @@ block content
           h2(style="margin:0;") My activities
         if user
           div.col-lg-4(align="right")
-            a(href='/tasks/add').btn.btn-default
+            a(id="add-btn").btn.btn-default
               span.glyphicon.glyphicon-plus
       ul.list-group
         each task, i in tasks
@@ -20,3 +19,15 @@ block content
             if user
               input(type='checkbox')
             a(href='/tasks/'+task._id)= task.title
+
+  div.modal(id="add-modal")
+    div.modal-dialog(role="document", aria-hidden="true")
+      div.modal-content
+        div.modal-header
+          //- h5.modal-title Add Task
+          button.close(data-dismiss="modal" aria-label="Close")
+        div.modal-body
+          include add_task.pug
+        div.modal-footer
+          button.btn.btn-primary(id="add-btn-modal") Add
+          button.btn.btn-secondary(data-dismiss="modal") Close
