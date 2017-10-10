@@ -31,6 +31,7 @@ router.post('/add', function(req, res){
     task.title = req.body.title;
     task.creator = req.user._id;
     task.body = req.body.body;
+    task.dueDate = req.body.dueDate;
 
     task.save(function(err){
       if(err) {
@@ -44,17 +45,18 @@ router.post('/add', function(req, res){
   }
 });
 
+// To fix: Crash occurs because of creator here.
 // Get single task
-router.get('/:id', function(req, res){
-  Task.findById(req.params.id, function(err, task){
-    User.findById(task.creator, function(err, user){
-      res.render('task', {
-        task:task,
-        creator: user.name
-      });
-    });
-  });
-});
+// router.get('/:id', function(req, res){
+//   Task.findById(req.params.id, function(err, task){
+//     User.findById(task.creator, function(err, user){
+//       res.render('task', {
+//         task:task,
+//         creator: user.name
+//       });
+//     });
+//   });
+// });
 
 // Load edit form
 router.get('/edit/:id', ensureAuthenticated, function(req, res){
@@ -68,6 +70,12 @@ router.get('/edit/:id', ensureAuthenticated, function(req, res){
         task:task
       });
     }
+  });
+});
+
+router.get('/list', function(req, res){
+  Task.find(req.query.selectedDate, function(err, tasks){
+    res.send(tasks);
   });
 });
 

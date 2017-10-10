@@ -13,12 +13,13 @@ block content
           div.col-lg-4(align="right")
             a(id="add-btn").btn.btn-default
               span.glyphicon.glyphicon-plus
-      ul.list-group
-        each task, i in tasks
-          li.list-group-item
-            if user
-              input(type='checkbox')
-            a(href='/tasks/'+task._id)= task.title
+      div.row(id="task-list")
+        ul.list-group
+          each task, i in tasks
+            li.list-group-item
+              if user
+                input(type='checkbox')
+              a(href='/tasks/'+task._id)= task.title
 
   div.modal(id="add-modal")
     div.modal-dialog(role="document", aria-hidden="true")

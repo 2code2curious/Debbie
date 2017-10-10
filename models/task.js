@@ -13,6 +13,9 @@ let taskSchema = mongoose.Schema({
   body:{
     type: String,
     required: true
+  },
+  dueDate:{
+    type: Date
   }
 });
 

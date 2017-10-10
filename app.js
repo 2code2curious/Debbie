@@ -86,16 +86,19 @@ app.get('*', function(req, res, next){
 
 // Home route
 app.get('/', function(req, res) {
-  Task.find({}, function(err, tasks){
-    if(err){
-      console.log(err);
-    } else {
-    res.render('index', {
-      title:'Debbie welcomes you!',
-      tasks:tasks
+  let today = new Date();
+  today.setUTCHours(0,0,0,0);
+  let query = {dueDate:today};
+    Task.find(query, function(err, tasks){
+      if(err){
+        console.log(err);
+      } else {
+        res.render('index', {
+          title:'Debbie welcomes you!',
+          tasks:tasks
+        });
+      }
     });
-    }
-  });
 });
 
 // Route files
