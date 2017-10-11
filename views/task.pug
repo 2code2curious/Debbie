@@ -4,6 +4,7 @@ block content
   h1= task.title
   h5 Created by #{creator}
   h5= task.body
+  h5= task.dueDate
   hr
   if user
     if user.id == task.creator

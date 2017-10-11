@@ -45,18 +45,23 @@ router.post('/add', function(req, res){
   }
 });
 
-// To fix: Crash occurs because of creator here.
+router.get('/list', function(req, res){
+  Task.find(req.query.selectedDate, function(err, tasks){
+    res.send(tasks);
+  });
+});
+
 // Get single task
-// router.get('/:id', function(req, res){
-//   Task.findById(req.params.id, function(err, task){
-//     User.findById(task.creator, function(err, user){
-//       res.render('task', {
-//         task:task,
-//         creator: user.name
-//       });
-//     });
-//   });
-// });
+router.get('/:id', function(req, res){
+  Task.findById(req.params.id, function(err, task){
+    User.findById(task.creator, function(err, user){
+      res.render('task', {
+        task:task,
+        creator: user.name
+      });
+    });
+  });
+});
 
 // Load edit form
 router.get('/edit/:id', ensureAuthenticated, function(req, res){
@@ -73,11 +78,6 @@ router.get('/edit/:id', ensureAuthenticated, function(req, res){
   });
 });
 
-router.get('/list', function(req, res){
-  Task.find(req.query.selectedDate, function(err, tasks){
-    res.send(tasks);
-  });
-});
 
 // Update Submit POST route
 router.post('/edit/:id', function(req, res){

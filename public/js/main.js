@@ -56,7 +56,7 @@ function dateEvent(id){
     tasks.forEach(function(task){
       if(task.dueDate==selectedDate){
         $tasks.append(`<li class="list-group-item"><input type="checkbox">
-        <a href="/tasks/list">${task.title}</a></li>`);
+        <a href="/tasks/${task._id}">${task.title}</a></li>`);
       }
     });
     $("#task-list").html($tasks);
