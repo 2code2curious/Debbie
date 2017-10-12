@@ -50,13 +50,25 @@ function dateEvent(id){
     }
   });
 
-  // Refresh the tasks' list on the right, with list items added to html.
+  /** Refresh the tasks' list on the right, with list items added to html.
+    * Show the checkboxes only if the user has logged in.
+   **/
   $.get('/tasks/list', function(tasks){
     var $tasks = $('<ul class="list-group"></ul>');
     tasks.forEach(function(task){
+      var checkBox;
+      if (user){
+        if (user._id==task.creator){
+          checkBox = '<input type="checkbox">';
+        } else{
+          checkBox = ''
+        }
+      } else {
+        checkBox = '';
+      }
       if(task.dueDate==selectedDate){
-        $tasks.append(`<li class="list-group-item"><input type="checkbox">
-        <a href="/tasks/${task._id}">${task.title}</a></li>`);
+        $tasks.append('<li class="list-group-item">'+checkBox+
+        `<a href="/tasks/${task._id}">${task.title}</a></li>`);
       }
     });
     $("#task-list").html($tasks);

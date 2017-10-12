@@ -18,7 +18,8 @@ block content
           each task, i in tasks
             li.list-group-item
               if user
-                input(type='checkbox')
+                if (user._id==task.creator)
+                  input(type='checkbox')
               a(href='/tasks/'+task._id)= task.title
 
   div.modal(id="add-modal")
