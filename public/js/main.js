@@ -54,12 +54,12 @@ function dateEvent(id){
     * Show the checkboxes only if the user has logged in.
    **/
   $.get('/tasks/list', function(tasks){
-    var $tasks = $('<ul class="list-group"></ul>');
+    var $tasks = $('<ul class="list-group" id="task-list"></ul>');
     tasks.forEach(function(task){
       var checkBox;
       if (user){
         if (user._id==task.creator){
-          checkBox = '<input type="checkbox">';
+          checkBox = '<input type="checkbox" class="checkitem">';
         } else{
           checkBox = ''
         }
@@ -74,3 +74,12 @@ function dateEvent(id){
     $("#task-list").html($tasks);
   });
 }
+
+// Toggle strikethrough task item when checkbox is checked/unchecked.
+$("#task-list").on('click', 'li', function(e){
+  if ($(this).closest('li').find('input.checkitem').is(':checked')){
+    ($(this).closest("li")).wrap("<strike>")
+  } else if(!($(this).closest('li').find('input.checkitem').is(':checked'))){
+    ($(this).closest("li")).unwrap()
+  }
+});

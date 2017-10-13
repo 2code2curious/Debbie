@@ -14,12 +14,12 @@ block content
             a(id="add-btn").btn.btn-default
               span.glyphicon.glyphicon-plus
       div.row(id="task-list")
-        ul.list-group
+        ul.list-group.task-list
           each task, i in tasks
             li.list-group-item
               if user
                 if (user._id==task.creator)
-                  input(type='checkbox')
+                  input.checkitem(type='checkbox')
               a(href='/tasks/'+task._id)= task.title
 
   div.modal(id="add-modal")
