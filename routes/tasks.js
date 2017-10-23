@@ -32,6 +32,7 @@ router.post('/add', function(req, res){
     task.creator = req.user._id;
     task.body = req.body.body;
     task.dueDate = req.body.dueDate;
+    task.isCompleted = false;
 
     task.save(function(err){
       if(err) {
@@ -45,9 +46,36 @@ router.post('/add', function(req, res){
   }
 });
 
+// Send list of tasks corresponding to date chosen to render
 router.get('/list', function(req, res){
   Task.find(req.query.selectedDate, function(err, tasks){
     res.send(tasks);
+  });
+});
+
+router.put('/id1', function(req, res){
+  var query = {_id:req.body.taskId};
+  var update;
+
+  console.log(req.body.isComplete);
+  if(req.body.isComplete) {
+    console.log("Hello");
+    update = {"isCompleted": true};
+  } else {
+    console.log("Bye");
+    update = {"isCompleted": false};
+  }
+  console.log(update);
+
+  Task.findByIdAndUpdate(query,
+  {$set: update}, {upsert: true}, function(err, doc){
+    if(err){
+      console.error(err);
+    } else{
+      console.log('Updated');
+      console.log(doc);
+      res.send('OK');
+    }
   });
 });
 

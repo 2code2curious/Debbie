@@ -16,6 +16,9 @@ let taskSchema = mongoose.Schema({
   },
   dueDate:{
     type: Date
+  },
+  isCompleted:{
+    type: Boolean
   }
 });
 

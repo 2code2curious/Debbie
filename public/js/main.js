@@ -76,10 +76,29 @@ function dateEvent(id){
 }
 
 // Toggle strikethrough task item when checkbox is checked/unchecked.
+// function toggle(){
 $("#task-list").on('click', 'li', function(e){
   if ($(this).closest('li').find('input.checkitem').is(':checked')){
-    ($(this).closest("li")).wrap("<strike>")
+    ($(this).closest("li")).wrap("<strike>");
+    var taskId = $(this).closest("li").find('a').attr('href').split('/')[2];
+    updateTaskStatus(taskId, true);
   } else if(!($(this).closest('li').find('input.checkitem').is(':checked'))){
-    ($(this).closest("li")).unwrap()
+    ($(this).closest("li")).unwrap();
+    var taskId = $(this).closest("li").find('a').attr('href').split('/')[2];
+    updateTaskStatus(taskId, false);
   }
 });
+
+function updateTaskStatus(taskId, isComplete){
+  $.ajax({
+    url: '/tasks/id1/',
+    type: 'PUT',
+    data: {taskId:taskId, isComplete:isComplete},
+    success: function(response){
+      alert('Updating task status..');
+    },
+    error: function(error){
+      console.log(error);
+    }
+  });
+}
