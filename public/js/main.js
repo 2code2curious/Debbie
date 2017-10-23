@@ -51,7 +51,8 @@ function dateEvent(id){
   });
 
   /** Refresh the tasks' list on the right, with list items added to html.
-    * Show the checkboxes only if the user has logged in.
+    * Show the checkboxes only if the user has logged in and mark them checked
+    * by default if the status has been set 'complete'.
    **/
   $.get('/tasks/list', function(tasks){
     var $tasks = $('<ul class="list-group" id="task-list"></ul>');
@@ -67,8 +68,14 @@ function dateEvent(id){
         checkBox = '';
       }
       if(task.dueDate==selectedDate){
-        $tasks.append('<li class="list-group-item">'+checkBox+
-        `<a href="/tasks/${task._id}">${task.title}</a></li>`);
+        var taskItem = '<li class="list-group-item">'+checkBox+
+        `<a href="/tasks/${task._id}">${task.title}</a></li>`;
+        if (user && task.isCompleted){
+          checkBox = '<input type="checkbox" class="checkitem" checked="checked">';
+          taskItem = '<strike><li class="list-group-item">'+checkBox+
+          `<a href="/tasks/${task._id}">${task.title}</a></li></strike>`;
+        }
+        $tasks.append(taskItem);
       }
     });
     $("#task-list").html($tasks);
@@ -91,7 +98,7 @@ $("#task-list").on('click', 'li', function(e){
 
 function updateTaskStatus(taskId, isComplete){
   $.ajax({
-    url: '/tasks/id1/',
+    url: '/tasks/taskStatus/',
     type: 'PUT',
     data: {taskId:taskId, isComplete:isComplete},
     success: function(response){

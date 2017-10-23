@@ -53,27 +53,17 @@ router.get('/list', function(req, res){
   });
 });
 
-router.put('/id1', function(req, res){
+// Update task completion status in database as per input events on checkboxes.
+router.put('/taskStatus', function(req, res){
   var query = {_id:req.body.taskId};
-  var update;
-
-  console.log(req.body.isComplete);
-  if(req.body.isComplete) {
-    console.log("Hello");
-    update = {"isCompleted": true};
-  } else {
-    console.log("Bye");
-    update = {"isCompleted": false};
-  }
-  console.log(update);
+  var update = (req.body.isComplete == "true") ? {"isCompleted": true} :
+  {"isCompleted": false};
 
   Task.findByIdAndUpdate(query,
   {$set: update}, {upsert: true}, function(err, doc){
     if(err){
       console.error(err);
     } else{
-      console.log('Updated');
-      console.log(doc);
       res.send('OK');
     }
   });
