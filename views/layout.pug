@@ -4,18 +4,20 @@ html
     title Debbie
     link(rel='stylesheet' href='/bower_components/bootstrap/dist/css/bootstrap.css')
     link(rel='stylesheet' href='/css/zabuto_calendar.css')
+    link(rel='stylesheet' href='https://fonts.googleapis.com/css?family=Pacifico')
     link(rel='stylesheet' href='/css/style.css')
+    link(rel='stylesheet' href='/bower_components/components-font-awesome/css/font-awesome.min.css')
   body
-    nav.navbar.navbar-inverse
-      .container
-        .navbar-header
-          button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#navbar', aria expanded='false', aria-controls='navbar')
-            span.sr-only Toggle Navigation
-            span.icon-bar
-            span.icon-bar
-            span.icon-bar
-          a.navbar-brand(href='/') Debbie
-        #navbar.collapse.navbar-collapse
+  //-   nav.navbar
+  //-     .container
+  //-       .navbar-header
+  //-         button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#navbar', aria expanded='false', aria-controls='navbar')
+  //-           span.sr-only Toggle Navigation
+  //-           span.icon-bar
+  //-           span.icon-bar
+  //-           span.icon-bar
+  //-         a.navbar-brand(href='/') debbie
+  //-       #navbar.collapse.navbar-collapse
           //- ul.nav.navbar-nav
             li
               a(href='/') Home
@@ -23,29 +25,30 @@ html
             //- if user
               li
                 a(href='/tasks/add') Add Task
-          ul.nav.navbar-nav.navbar-right
+          //- ul.nav.navbar-nav.navbar-right
             if user
               li
-                a(href='/users/logout') Logout
-            else
-              li
-                a(href='/users/register') Register
-              li
-                a(href='/users/login') Login
-    .container
-      != messages('message', locals)
-      if errors
-        each error, i in errors
-          div(class="alert alert-danger") #{error.msg}
-      block content
-      br
-      div.col-lg-12
-        hr
-        footer
-          p Copyright &copy; 2017
-      script(src='/bower_components/jquery/dist/jquery.js')
-      script(src='/bower_components/bootstrap/dist/js/bootstrap.js')
-      script(src='/js/zabuto_calendar.js')
-      script(type='text/javascript').
-        var user =!{JSON.stringify(user)};
-      script(src='/js/main.js')
+                //- a(href='/users/logout') Logout
+    //-         else
+    //-           li
+    //-             a(href='/users/register') Register
+    //-           li
+    //-             a(href='/users/login') Login
+  .container
+    != messages('message', locals)
+    if errors
+      each error, i in errors
+        div(class="alert alert-danger") #{error.msg}
+    block content
+    //- br
+    //- div.col-lg-12
+    //-   hr
+    //-   footer
+    //-     p Copyright &copy; 2017
+      
+  script(src='/bower_components/jquery/dist/jquery.js')
+  script(src='/bower_components/bootstrap/dist/js/bootstrap.js')
+  script(src='/js/zabuto_calendar.js')
+  script(type='text/javascript').
+    var user =!{JSON.stringify(user)};
+  script(src='/js/main.js')

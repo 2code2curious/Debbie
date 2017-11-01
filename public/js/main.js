@@ -1,3 +1,5 @@
+var isDateClicked = false;
+
 $(document).ready(function(){
   $("#calendar").zabuto_calendar({
     language: 'en',
@@ -24,6 +26,10 @@ $(document).ready(function(){
   });
 
   $("#add-btn").on('click', function(){
+    // If no date is clicked on calendar, today's date is chosen by default for task.
+    if(!isDateClicked){
+      document.getElementById('dueDate').value = new Date().toISOString();
+    }
     $("#add-modal").modal('show');
   });
 
@@ -33,6 +39,7 @@ $(document).ready(function(){
 });
 
 function dateEvent(id){
+  isDateClicked = true;
   var selectedDate = $("#" + id).data("date");
   selectedDate = new Date(selectedDate);
   selectedDate = selectedDate.toISOString();
@@ -68,17 +75,20 @@ function dateEvent(id){
         checkBox = '';
       }
       if(task.dueDate==selectedDate){
-        var taskItem = '<li class="list-group-item">'+checkBox+
-        `<a href="/tasks/${task._id}">${task.title}</a></li>`;
-        if (user && task.isCompleted){
-          checkBox = '<input type="checkbox" class="checkitem" checked="checked">';
-          taskItem = '<strike><li class="list-group-item">'+checkBox+
-          `<a href="/tasks/${task._id}">${task.title}</a></li></strike>`;
-        }
-        $tasks.append(taskItem);
+          var taskItem = '<li class="list-group-item">'+checkBox+
+          `<a href="/tasks/${task._id}">${task.title}</a></li>`;
+          if (user && task.isCompleted){
+            checkBox = '<input type="checkbox" class="checkitem" checked="checked">';
+            taskItem = '<strike><li class="list-group-item">'+checkBox+
+            `<a href="/tasks/${task._id}">${task.title}</a></li></strike>`;
+          }
+          $tasks.append(taskItem);
       }
     });
     $("#task-list").html($tasks);
+    if($tasks.children().length === 0){
+      $("#task-list").html('<img src="../img/hooray.jpg" width="400"><br><h4> Hooray! No tasks for today.</h4>');
+    }
   });
 }
 
