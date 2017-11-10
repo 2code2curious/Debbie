@@ -1,5 +1,9 @@
 # Debbie
 
+![alt text]('public/img/debbie.png' "Debbie")
+
+Reference-style:
+
 ## Usage
 
 ### Installation
