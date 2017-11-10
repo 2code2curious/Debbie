@@ -48,8 +48,16 @@ html, body {
   box-shadow: none;
   border-bottom: 1px solid #ECECEC;
 }
+.form-control:focus{
+  outline: none;
+  box-shadow: none;
+  border-bottom: 1px solid #C94977;
+}
 .input-group{
   margin-bottom: 25px;
+}
+.input-group-focus{
+  border-bottom: 1px solid #C94977;
 }
 .btn{
   width: 100%;

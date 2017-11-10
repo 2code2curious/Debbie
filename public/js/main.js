@@ -35,7 +35,13 @@ $(document).ready(function(){
 
   $("#add-btn-modal").on('click', function(){
     $("#add-task-form").submit();
-  })
+  });
+
+  $(".form-control").focus(function(e) {
+    $(this).parent().children().addClass("input-group-focus");
+  }).blur(function(e) {
+    $(this).parent().children().removeClass("input-group-focus");
+  });
 });
 
 function dateEvent(id){
