@@ -6,6 +6,7 @@ html, body {
   position: fixed;
   width: 100%;
   height: 100%;
+  margin: 0;
 }
 .alert-error{
   color: #a94442;
@@ -31,9 +32,6 @@ html, body {
   font-size: 40px;
   margin-top: 130px;
   margin-bottom: 130px;
-}
-.bg{
-  color: #C32361;
 }
 .icon{
   background: transparent;
@@ -78,11 +76,8 @@ html, body {
   position: relative;
 }
 .caption{
-  position: absolute;
-  top: 25%;
-  width: 100%;
   color: #ffffff;
-  margin-left: 100px;
+  margin-top: 200px;
 }
 .caption>h1{
   margin-bottom: 20px;

@@ -3,12 +3,16 @@ extends layout
 block content
   div.container
     div.row
-      div.col-lg-5.col-md-5.col-sm-12.col-xs-12
+      div.col-md-5
+        != messages('message', locals)
+        if errors
+          each error, i in errors
+            div(class="alert alert-danger") #{error.msg}
         div.row
-          div.col-lg-12
+          div.col-xs-10.col-xs-offset-1
             h3.brand.text-center debbie
         div.row
-          div.col-lg-6.col-lg-offset-3.col-md-6.col-md-offset-3.col-sm-12
+          div.col-md-6.col-md-offset-3.col-xs-6.col-xs-offset-3
             form(method='POST', action='/users/login')
               div.input-group
                 div.input-group-addon.icon
@@ -22,12 +26,12 @@ block content
               input.btn.btn-default(type='submit', value='LOGIN')
             p.text-center.register Don't have an account? 
               a(href='/users/register') Sign up here.
-      div.col-lg-7.col-md-7
-        div.row
-          div.col-lg-12.col-md-12
-            div.bg
+      div.col-md-7.hidden-sm.hidden-xs
+        div.bg
+          div.row
+            div.col-md-8.col-md-offset-2
               div.caption
-                h1 Manage your work with debbie.
+                h1 Manage your work with Debbie.
                 ul
                   li Create tasks
                   li Assign due dates
