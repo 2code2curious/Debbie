@@ -1,8 +1,6 @@
 # Debbie
 
-![alt text]('public/img/debbie.png' "Debbie")
-
-Reference-style:
+![Login page](public/img/debbie.png "Debbie")
 
 ## Usage
 
